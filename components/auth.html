@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura E-Bank | Secure Access</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app-viewport"></div>
+    <template id="tpl-login">
+        <div class="public-page-layout">
+            <header class="public-header">
+                <div class="header-container">
+                    <div class="header-logo"><i class="fas fa-shield-halved"></i> Aura E-Bank</div>
+                    <nav class="header-nav">
+                        <a href="#">Personal</a>
+                        <a href="#">Business</a>
+                        <a href="#">Security</a>
+                        <a href="#">Services</a> </nav>
+                    <button class="btn-download">Download App</button>
+                </div>
+            </header>
+
+            <main class="auth-wrapper">
+                <div class="glass-card auth-card">
+                    <div class="brand-header">
+                        <i class="fas fa-shield-halved"></i>
+                        <h2 class="header-logo">Aura E-Bank</h2>
+                    </div>
+                    <form id="login-form" class="auth-form">
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" name="email" placeholder="Email Address" required autocomplete="email">
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="login-pass" name="password" placeholder="Password" required autocomplete="current-password">
+                            <i class="fas fa-eye toggle-password" onclick="togglePassword('login-pass', this)"></i>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+                    </form>
+                    <p class="auth-footer">
+                        New to Aura? <a href="#" class="link-primary" onclick="renderView('register')">Create an Account</a>
+                    </p>
+                </div>
+            </main>
+
+            <footer class="public-footer">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <h4>Aura E-Bank</h4>
+                        <p>Your digital financial future, powered by secure innovation.</p>
+                        <p class="contact-text">Support: 1-800-AURA</p>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Products</h5>
+                        <p>Savings</p><p>Checking</p><p>Loans</p>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Resources</h5>
+                        <p>Help Center</p><p>Security Tips</p><p>Blog</p>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Legal</h5>
+                        <p>Privacy Policy</p><p>Terms of Service</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p class="copy">Copyright © 2024 Aura E-Bank</p>
+                </div>
+            </footer>
+        </div>
+    </template>
+
+    <template id="tpl-register">
+        <div class="public-page-layout">
+            <header class="public-header">
+                <div class="header-container">
+                    <div class="header-logo"><i class="fas fa-shield-halved"></i> Aura E-Bank</div>
+                    <nav class="header-nav">
+                        <a href="#">Personal</a>
+                        <a href="#">Business</a>
+                        <a href="#">Security</a>
+                        <a href="#">Services</a> </nav>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="#" class="link-primary" style="align-self: center;" onclick="renderView('login')">Sign In</a>
+                        <button class="btn-download">Download App</button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="auth-wrapper">
+                <div class="glass-card auth-card register-wide">
+                    <div class="brand-header">
+                        <h2>Join the Future</h2>
+                        <p>Experience seamless banking identity</p>
+                    </div>
+                    
+                    <form id="register-form" class="auth-form">
+                        <div class="input-row">
+                            <div class="input-group"><i class="fas fa-user"></i><input type="text" name="first_name" placeholder="First Name" required></div>
+                            <div class="input-group"><i class="fas fa-fingerprint"></i><input type="text" name="middle_name" placeholder="Middle Name"></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group"><i class="fas fa-id-card"></i><input type="text" name="last_name" placeholder="Last Name" required></div>
+                            <div class="input-group">
+                                <i class="fas fa-tag"></i>
+                                <select name="suffix" class="select-input">
+                                    <option value="">No Suffix</option>
+                                    <option value="Jr.">Jr.</option>
+                                    <option value="Sr.">Sr.</option>
+                                    <option value="III">III</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group"><i class="fas fa-envelope"></i><input type="email" name="email" placeholder="Email Address" required></div>
+
+                        <div class="input-row">
+                            <div class="input-group"><i class="fas fa-calendar"></i><input type="date" name="birthdate" required></div>
+                            <div class="input-group">
+                                <i class="fas fa-venus-mars"></i>
+                                <select name="gender" class="select-input" required>
+                                    <option value="" disabled selected hidden>Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <small class="strength-hint" style="color: var(--muted); margin-bottom: 5px; display: block;">Phone must be exactly 11 digits</small>
+                        <div class="input-row">
+                            <div class="input-group"><i class="fas fa-phone"></i><input type="text" name="phone" placeholder="Phone" maxlength="11" required></div>
+                            <div class="input-group"><i class="fas fa-map-marker-alt"></i><input type="text" name="address" placeholder="Address/City" required></div>
+                        </div>
+
+                        <small class="strength-hint" style="color: var(--muted); margin-bottom: 5px; display: block;">Min 8 chars, Uppercase, Number & Symbol</small>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <i class="fas fa-key"></i>
+                                <input type="password" id="reg-pass" name="password" placeholder="Enter Password" required>
+                                <i class="fas fa-eye toggle-password" onclick="togglePassword('reg-pass', this)"></i>
+                            </div>
+                            <div class="input-group">
+                                <i class="fas fa-check-double"></i>
+                                <input type="password" id="reg-pass-confirm" placeholder="Confirm Password" required>
+                                <i class="fas fa-eye toggle-password" onclick="togglePassword('reg-pass-confirm', this)"></i>
+                            </div>
+                        </div>
+                        <p id="match-error" class="error-text" style="color: #ff4d4d; font-size: 11px; display: none;">Passwords do not match!</p>
+
+                        <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-block">Register Account</button>
+                    </form>
+
+                    <p class="auth-footer">
+                        Already a member? <a href="#" class="link-primary" onclick="renderView('login')">Sign In</a>
+                    </p>
+                </div>
+            </main>
+
+            <footer class="public-footer">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <h4>Aura E-Bank</h4>
+                        <p>Your digital financial future, powered by secure innovation.</p>
+                        <p class="contact-text">Support: 1-800-AURA</p>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Products</h5>
+                        <p>Savings</p><p>Checking</p><p>Loans</p>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Resources</h5>
+                        <p>Help Center</p><p>Security Tips</p><p>Blog</p>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Legal</h5>
+                        <p>Privacy Policy</p><p>Terms of Service</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p class="copy">Copyright © 2024 Aura E-Bank</p>
+                </div>
+            </footer>
+        </div>
+    </template>
+
+</body>
+</html>

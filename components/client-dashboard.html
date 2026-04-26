@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<template id="tpl-client-dashboard">
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="brand">AURA E-BANK</div>
+            <div class="user-profile">
+                <i class="fas fa-user-circle"></i>
+                <p id="display-name">User Name</p>
+                <small id="display-acc">ACC: ####-####</small>
+            </div>
+            <ul class="nav-links">
+                <li id="tab-wallet" class="active" onclick="switchTab('wallet')"><i class="fas fa-wallet"></i> <span>Wallet</span></li>
+                <li id="tab-history" onclick="switchTab('history')"><i class="fas fa-history"></i> <span>History</span></li>
+                <li id="tab-settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> <span>Settings</span></li>
+            </ul>
+            <button class="btn btn-danger btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></button>
+        </aside>
+
+        <main class="content">
+            <section id="sec-wallet">
+                <div class="glass-card balance-card">
+                    <small>Available Balance</small>
+                    <h1 id="display-balance">₱0.00</h1>
+                    <span class="currency-tag">PHP - Philippine Peso</span>
+                </div>
+
+                <div class="action-grid">
+                    <div class="glass-card">
+                        <h3><i class="fas fa-arrow-down" style="color: var(--success);"></i> Deposit</h3>
+                        <form onsubmit="handleTransaction(event, 'deposit')" class="auth-form">
+                            <div class="input-group">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <input type="number" placeholder="Amount" step="0.01" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Add Funds</button>
+                        </form>
+                    </div>
+                    <div class="glass-card">
+                        <h3><i class="fas fa-arrow-up" style="color: var(--danger);"></i> Withdraw</h3>
+                        <form onsubmit="handleTransaction(event, 'withdraw')" class="auth-form">
+                            <div class="input-group">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                <input type="number" placeholder="Amount" step="0.01" required>
+                            </div>
+                            <button type="submit" class="btn btn-danger btn-block">Get Cash</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="glass-card mt-4">
+                    <h3><i class="fas fa-paper-plane"></i> Send Money</h3>
+                    <form id="transfer-form" class="transfer-form">
+                        <div class="input-group">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" name="target_acc" placeholder="Receiver Account Number" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-coins"></i>
+                            <input type="number" name="amount" placeholder="Amount (PHP)" step="0.01" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-comment-alt"></i>
+                            <input type="text" name="description" placeholder="Notes (Optional)">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Transfer Funds</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="sec-history" class="hidden">
+    <div class="glass-card full-width">
+        <div class="header-flex">
+            <h3>Transaction History</h3>
+            <div class="input-group search-box" style="max-width: 1500px; margin-bottom: 15px;">
+                <i class="fas fa-search"></i>
+                <input type="text" id="history-search" placeholder="Search by Ref # or Description..." onkeyup="filterHistory()">
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="data-table">
+                <tbody id="user-trans-list"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+            <section id="sec-settings" class="hidden">
+                <div class="glass-card">
+                    <h3><i class="fas fa-user-shield"></i> Account Settings</h3>
+                    <form onsubmit="handleSelfUpdate(event)" class="auth-form">
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="self-email" name="email" placeholder="Email Address" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-phone"></i>
+                            <input type="text" id="self-phone" name="phone" placeholder="Phone Number" maxlength="11">
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-key"></i>
+                            <input type="password" id="self-pass" name="password" placeholder="New Password (Leave blank to keep)">
+                            <i class="fas fa-eye toggle-password" onclick="togglePassword('self-pass', this)"></i>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Update Profile</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+</template>
+</html>

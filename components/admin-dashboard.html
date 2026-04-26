@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<template id="tpl-admin-dashboard">
+    <div class="dashboard-container">
+        <aside class="sidebar admin-sidebar">
+            <div class="brand">AURA ADMINISTRATION</div>
+            <div class="user-profile">
+                <i class="fas fa-user-shield"></i>
+                <p id="admin-display-name">System Administrator</p>
+                <small id="admin-role-badge"></small>
+            </div>
+            <ul class="nav-links">
+                <li id="admin-tab-clients" class="active" onclick="adminTab('clients')"><i class="fas fa-users-cog"></i> <span>Manage Clients</span></li>
+                <li id="admin-tab-logs" onclick="adminTab('logs')"><i class="fas fa-exchange-alt"></i> <span>Global Logs</span></li>
+            </ul>
+            <button class="btn btn-danger btn-logout" onclick="logout()"><i class="fas fa-power-off"></i> <span>System Exit</span></button>
+        </aside>
+
+        <main class="content">
+            <div id="admin-stats-section" class="stats-grid">
+                <div class="glass-card">
+                    <h3>Total Bank Capital</h3>
+                    <h2 id="total-capital" class="text-primary">₱0.00</h2>
+                </div>
+                <div class="glass-card">
+                    <h3>Total Active Clients</h3>
+                    <h2 id="total-users">0</h2>
+                </div>
+            </div>
+            
+            <div id="admin-clients-sec">
+                <div class="header-flex">
+                    <h3>Manage Client Accounts</h3>
+                </div>
+                <div class="search-bar mt-2">
+                    <div class="input-group">
+                         <i class="fas fa-search"></i>
+                         <input type="text" id="admin-search" placeholder="Search name..." onkeyup="filterData()">
+                    </div>
+                </div>
+                <div class="glass-card full-width mt-2">
+                    <div class="table-responsive">
+                        <table class="data-table" id="table-clients">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>Account #</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                    <th>Management</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-user-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-logs-sec" class="hidden">
+                <div class="header-flex">
+                    <h3>Global Transaction Logs</h3>
+                </div>
+                <div class="search-bar mt-2">
+                    <div class="input-group">
+                         <i class="fas fa-search"></i>
+                         <input type="text" id="ref-search" placeholder="Search Reference..." onkeyup="filterLogsByRef()">
+                    </div>
+                </div>
+                <div class="glass-card full-width mt-2">
+                    <div class="table-responsive">
+                        <table class="data-table" id="table-global-logs">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Ref #</th>
+                                    <th>Sender</th>
+                                    <th>Receiver</th>
+                                    <th>Amount</th>
+                                    <th>Description</th> 
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-global-logs"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</template>
+</html>
