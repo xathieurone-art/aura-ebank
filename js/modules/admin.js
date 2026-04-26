@@ -291,16 +291,99 @@ async function loadAdminStats() {
     }
 }
 
+async function loadPendingLoans() {
+    const list = document.getElementById('pending-loans-list');
+    if (!list) return;
+    
+    try {
+        const response = await fetch('./api/get_loans.php');
+        const loans = await response.json();
+        
+        const pendingLoans = loans.filter(loan => loan.status === 'Pending');
+        
+        if (pendingLoans.length === 0) {
+            list.innerHTML = '<tr><td colspan="7" style="text-align:center;">No pending loan applications</td></tr>';
+            return;
+        }
+        
+        let html = '';
+        for (let i = 0; i < pendingLoans.length; i++) {
+            const loan = pendingLoans[i];
+            const date = new Date(loan.created_at).toLocaleString();
+            const amount = parseFloat(loan.amount).toLocaleString('en-PH', {minimumFractionDigits: 2});
+            html += `
+                <tr>
+                    <td>${date}</td>
+                    <td>${loan.first_name} ${loan.last_name}</td>
+                    <td>${loan.account_number}</td>
+                    <td>${loan.loan_type}</td>
+                    <td>₱${amount}</td>
+                    <td><span class="badge badge-warning">PENDING</span></td>
+                    <td class="management-actions">
+                        <i class="fas fa-check-circle" onclick="approveLoan(${loan.id})" title="Approve" style="color: var(--success); cursor: pointer; font-size: 1.2rem;"></i>
+                        <i class="fas fa-times-circle" onclick="declineLoan(${loan.id})" title="Decline" style="color: var(--danger); cursor: pointer; font-size: 1.2rem;"></i>
+                    </td>
+                </tr>
+            `;
+        }
+        list.innerHTML = html;
+    } catch (err) {
+        console.error('Error loading loans:', err);
+        list.innerHTML = '<tr><td colspan="7" style="text-align:center;">Error loading loans</td></tr>';
+    }
+}
+
+window.approveLoan = async function(loanId) {
+    if (!confirm('Approve this loan application? The amount will be credited to the user\'s balance.')) return;
+    try {
+        const response = await fetch('./api/approve_loan.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ loan_id: loanId })
+        });
+        const data = await response.json();
+        alert(data.message);
+        if (data.success) {
+            loadPendingLoans();
+            loadAdminStats();
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        alert('System error');
+    }
+};
+
+window.declineLoan = async function(loanId) {
+    if (!confirm('Decline this loan application?')) return;
+    try {
+        const response = await fetch('./api/decline_loan.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ loan_id: loanId })
+        });
+        const data = await response.json();
+        alert(data.message);
+        if (data.success) loadPendingLoans();
+    } catch (err) {
+        console.error('Error:', err);
+        alert('System error');
+    }
+};
+
 window.adminTab = function(tab) {
     const clientsSec = document.getElementById('admin-clients-sec');
+    const loansSec = document.getElementById('admin-loans-sec');
     const logsSec = document.getElementById('admin-logs-sec');
-    if (clientsSec && logsSec) {
-        clientsSec.classList.toggle('hidden', tab !== 'clients');
-        logsSec.classList.toggle('hidden', tab !== 'logs');
-    }
+    
+    if (clientsSec) clientsSec.classList.toggle('hidden', tab !== 'clients');
+    if (loansSec) loansSec.classList.toggle('hidden', tab !== 'loans');
+    if (logsSec) logsSec.classList.toggle('hidden', tab !== 'logs');
+    
     document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
     const activeTab = document.getElementById('admin-tab-' + tab);
     if (activeTab) activeTab.classList.add('active');
+    
     if (tab === 'logs') loadGlobalLogs();
+    else if (tab === 'loans') loadPendingLoans();
     else loadAdminUserList();
 };

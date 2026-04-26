@@ -1,7 +1,7 @@
 <?php
 ob_start();
-error_reporting(0);
-ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 require_once 'db.php';
 session_start();
@@ -22,17 +22,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $data['email'] ?? '';
     $pass  = $data['password'] ?? '';
 
-    if ($conn->connect_error) {
+    if (!isset($conn) || $conn->connect_error) {
         sendJSON([
             "success" => false,
-            "message" => "DB Connection Failed: " . $conn->connect_error
+            "message" => "DB Connection Failed: " . ($conn->connect_error ?? 'No connection')
         ]);
     }
 
     $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+    
+    if (!$stmt) {
+        sendJSON([
+            "success" => false,
+            "message" => "Prepare failed: " . $conn->error
+        ]);
+    }
+    
     $stmt->bind_param("s", $email);
     $stmt->execute();
-    $user = $stmt->get_result()->fetch_assoc();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
     if ($user && password_verify($pass, $user['password'])) {
 
@@ -47,7 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "account_number" => $user['account_number'],
                 "balance"        => (float)$user['balance'],
                 "role"           => $user['role'],
-                "status"         => $user['status']
+                "status"         => $user['status'],
+                "email"          => $user['email'],
+                "phone"          => $user['phone']
             ]
         ];
 
@@ -64,3 +75,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
 }
+?>

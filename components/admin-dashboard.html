@@ -11,6 +11,7 @@
             </div>
             <ul class="nav-links">
                 <li id="admin-tab-clients" class="active" onclick="adminTab('clients')"><i class="fas fa-users-cog"></i> <span>Manage Clients</span></li>
+                <li id="admin-tab-loans" onclick="adminTab('loans')"><i class="fas fa-hand-holding-usd"></i> <span>Loan Approvals</span></li>
                 <li id="admin-tab-logs" onclick="adminTab('logs')"><i class="fas fa-exchange-alt"></i> <span>Global Logs</span></li>
             </ul>
             <button class="btn btn-danger btn-logout" onclick="logout()"><i class="fas fa-power-off"></i> <span>System Exit</span></button>
@@ -51,6 +52,30 @@
                                 </tr>
                             </thead>
                             <tbody id="admin-user-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-loans-sec" class="hidden">
+                <div class="header-flex">
+                    <h3>Pending Loan Applications</h3>
+                </div>
+                <div class="glass-card full-width mt-2">
+                    <div class="table-responsive">
+                        <table class="data-table" id="table-loans">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Customer Name</th>
+                                    <th>Account #</th>
+                                    <th>Loan Type</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pending-loans-list"></tbody>
                         </table>
                     </div>
                 </div>

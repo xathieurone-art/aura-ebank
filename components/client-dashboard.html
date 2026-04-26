@@ -12,6 +12,8 @@
             <ul class="nav-links">
                 <li id="tab-wallet" class="active" onclick="switchTab('wallet')"><i class="fas fa-wallet"></i> <span>Wallet</span></li>
                 <li id="tab-history" onclick="switchTab('history')"><i class="fas fa-history"></i> <span>History</span></li>
+                <li id="tab-loan" onclick="switchTab('loan')"><i class="fas fa-hand-holding-usd"></i> <span>Loan</span></li>
+                <li id="tab-bills" onclick="switchTab('bills')"><i class="fas fa-file-invoice-dollar"></i> <span>Bill Payments</span></li>
                 <li id="tab-settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> <span>Settings</span></li>
             </ul>
             <button class="btn btn-danger btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></button>
@@ -69,22 +71,112 @@
             </section>
 
             <section id="sec-history" class="hidden">
-    <div class="glass-card full-width">
-        <div class="header-flex">
-            <h3>Transaction History</h3>
-            <div class="input-group search-box" style="max-width: 1500px; margin-bottom: 15px;">
-                <i class="fas fa-search"></i>
-                <input type="text" id="history-search" placeholder="Search by Ref # or Description..." onkeyup="filterHistory()">
-            </div>
-        </div>
-        
-        <div class="table-responsive">
-            <table class="data-table">
-                <tbody id="user-trans-list"></tbody>
-            </table>
-        </div>
-    </div>
-</section>
+                <div class="glass-card full-width">
+                    <h3>Transaction History</h3>
+                    <div class="input-group search-box" style="max-width: 500px; margin-bottom: 15px;">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="history-search" placeholder="Search by Ref # or Description..." onkeyup="filterHistory()">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Ref #</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-trans-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-loan" class="hidden">
+                <div class="glass-card full-width">
+                    <h3><i class="fas fa-file-invoice"></i> Loan Application</h3>
+                    <form onsubmit="handleLoanApplication(event)" class="auth-form" style="max-width: 600px;">
+                        <div class="input-group">
+                            <i class="fas fa-university"></i>
+                            <select id="loan-type" required>
+                                <option value="" disabled selected>Select Loan Type</option>
+                                <option value="Personal">Personal Loan</option>
+                                <option value="Home">Home Loan</option>
+                                <option value="Car">Car Loan</option>
+                                <option value="Business">Business Loan</option>
+                                <option value="Education">Education Loan</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-coins"></i>
+                            <input type="number" id="loan-amount" placeholder="Desired Amount (PHP)" step="0.01" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Submit Loan Application</button>
+                    </form>
+                </div>
+
+                <div class="glass-card mt-4 full-width">
+                    <h3>My Loan Applications</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Loan Type</th>
+                                    <th>Amount</th>
+                                    <th>Date Applied</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-loan-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-bills" class="hidden">
+                <div class="glass-card full-width">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> Pay a Bill</h3>
+                    <form onsubmit="handleBillPayment(event)" class="auth-form" style="max-width: 600px;">
+                        <div class="input-group">
+                            <i class="fas fa-building"></i>
+                            <select id="biller-type" required>
+                                <option value="" disabled selected>Select Biller</option>
+                                <option value="Meralco">Meralco (Electricity)</option>
+                                <option value="Maynilad">Maynilad (Water)</option>
+                                <option value="Manila Water">Manila Water</option>
+                                <option value="PLDT">PLDT (Internet)</option>
+                                <option value="Globe">Globe (Internet/Mobile)</option>
+                                <option value="Smart">Smart (Mobile)</option>
+                                <option value="BDO">BDO Credit Card</option>
+                                <option value="BPI">BPI Credit Card</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-coins"></i>
+                            <input type="number" id="bill-amount" placeholder="Amount (PHP)" step="0.01" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Pay Bill</button>
+                    </form>
+                </div>
+
+                <div class="glass-card mt-4 full-width">
+                    <h3>Bill Payment History</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Biller</th>
+                                    <th>Amount</th>
+                                    <th>Date Paid</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-bills-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
             <section id="sec-settings" class="hidden">
                 <div class="glass-card">
