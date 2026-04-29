@@ -34,8 +34,3 @@ AURA E-BANK is a web-based digital banking management system that enhances the e
 - View bank statistics (total capital, total users)
 - Undo transactions
 - Permanently delete user accounts
-
-
-1. **Clone or download the repository**
-   ```bash
-   git clone https://github.com/xathieurone-art/aura-ebank.git
