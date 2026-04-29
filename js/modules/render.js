@@ -43,12 +43,11 @@ window.renderView = async function(viewId) {
             const adminNameEl = document.getElementById('admin-display-name');
             const roleBadgeEl = document.getElementById('admin-role-badge');
             if (adminNameEl) {
-                const first = user.first_name || '';
-                const last = user.last_name || '';
-                const suffix = user.suffix || '';
-                const rolePrefix = user.role === 'staff' ? '[STAFF] ' : '';
-                adminNameEl.innerText = rolePrefix + `${first} ${last} ${suffix}`.trim() || (user.role === 'staff' ? 'Aura Staff' : 'Aura Administrator');
-            }
+    const first = user.first_name || '';
+    const last = user.last_name || '';
+    const suffix = user.suffix || '';
+    adminNameEl.innerText = `${first} ${last} ${suffix}`.trim() || (user.role === 'staff' ? 'Aura Staff' : 'Aura Administrator');
+}
             if (roleBadgeEl) {
                 if (user.role === 'admin') {
                     roleBadgeEl.innerText = 'AURA ADMIN';

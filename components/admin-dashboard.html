@@ -30,16 +30,16 @@
             </div>
             
             <div id="admin-clients-sec">
-                <div class="header-flex">
-                    <h3>Manage Client Accounts</h3>
-                </div>
-                <div class="search-bar mt-2">
-                    <div class="input-group">
-                         <i class="fas fa-search"></i>
-                         <input type="text" id="admin-search" placeholder="Search name..." onkeyup="filterData()">
-                    </div>
-                </div>
                 <div class="glass-card full-width mt-2">
+                    <div class="header-flex">
+                        <h3>Manage Client Accounts</h3>
+                    </div>
+                    <div class="search-bar mt-2">
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="admin-search" placeholder="Search name..." onkeyup="filterData()">
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="data-table" id="table-clients">
                             <thead>
@@ -58,10 +58,16 @@
             </div>
 
             <div id="admin-loans-sec" class="hidden">
-                <div class="header-flex">
-                    <h3>Pending Loan Applications</h3>
-                </div>
                 <div class="glass-card full-width mt-2">
+                    <div class="header-flex">
+                        <h3>Pending Loan Applications</h3>
+                    </div>
+                    <div class="search-bar mt-2">
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="loan-search" placeholder="Search name, account, or loan type..." onkeyup="filterLoanData()">
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="data-table" id="table-loans">
                             <thead>
@@ -82,16 +88,16 @@
             </div>
 
             <div id="admin-logs-sec" class="hidden">
-                <div class="header-flex">
-                    <h3>Global Transaction Logs</h3>
-                </div>
-                <div class="search-bar mt-2">
-                    <div class="input-group">
-                         <i class="fas fa-search"></i>
-                         <input type="text" id="ref-search" placeholder="Search Reference..." onkeyup="filterLogsByRef()">
-                    </div>
-                </div>
                 <div class="glass-card full-width mt-2">
+                    <div class="header-flex">
+                        <h3>Global Transaction Logs</h3>
+                    </div>
+                    <div class="search-bar mt-2">
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="ref-search" placeholder="Search Reference..." onkeyup="filterLogsByRef()">
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="data-table" id="table-global-logs">
                             <thead>

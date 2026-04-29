@@ -8,6 +8,7 @@
 </head>
 <body>
     <div id="app-viewport"></div>
+
     <template id="tpl-login">
         <div class="public-page-layout">
             <header class="public-header">
@@ -17,8 +18,9 @@
                         <a href="#">Personal</a>
                         <a href="#">Business</a>
                         <a href="#">Security</a>
-                        <a href="#">Services</a> </nav>
-                    <button class="btn-download">Download App</button>
+                        <a href="#">Services</a>
+                    </nav>
+                    <div class="header-actions-spacer"></div> 
                 </div>
             </header>
 
@@ -82,11 +84,9 @@
                         <a href="#">Personal</a>
                         <a href="#">Business</a>
                         <a href="#">Security</a>
-                        <a href="#">Services</a> </nav>
-                    <div style="display: flex; gap: 10px;">
-                        <a href="#" class="link-primary" style="align-self: center;" onclick="renderView('login')">Sign In</a>
-                        <button class="btn-download">Download App</button>
-                    </div>
+                        <a href="#">Services</a>
+                    </nav>
+                    <div class="header-actions-spacer"></div>
                 </div>
             </header>
 
@@ -117,9 +117,11 @@
                         </div>
 
                         <div class="input-group"><i class="fas fa-envelope"></i><input type="email" name="email" placeholder="Email Address" required></div>
-
+ <small class="strength-hint" style="color: var(--muted); margin-bottom: 5px; display: block;">Birthdate</small>
                         <div class="input-row">
                             <div class="input-group"><i class="fas fa-calendar"></i><input type="date" name="birthdate" required></div>
+
+
                             <div class="input-group">
                                 <i class="fas fa-venus-mars"></i>
                                 <select name="gender" class="select-input" required>
@@ -182,7 +184,7 @@
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p class="copy">Copyright © 2024 Aura E-Bank</p>
+                    <p class="copy">Copyright © 2026 Aura E-Bank</p>
                 </div>
             </footer>
         </div>

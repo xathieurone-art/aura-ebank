@@ -387,3 +387,30 @@ window.adminTab = function(tab) {
     else if (tab === 'loans') loadPendingLoans();
     else loadAdminUserList();
 };
+//added search filter for loan approvals
+window.filterLoanData = function() {
+    const input = document.getElementById('loan-search');
+    if (!input) return;
+    const filter = input.value.toLowerCase();
+    const tableBody = document.getElementById('pending-loans-list');
+    if (!tableBody) return;
+    const rows = tableBody.querySelectorAll('tr');
+    
+    rows.forEach(row => {
+        const nameCell = row.cells[1];
+        const accCell = row.cells[2];
+        const loanTypeCell = row.cells[3];
+        
+        if (nameCell && accCell && loanTypeCell) {
+            const nameText = nameCell.textContent.toLowerCase();
+            const accText = accCell.textContent.toLowerCase();
+            const loanTypeText = loanTypeCell.textContent.toLowerCase();
+            
+            if (nameText.includes(filter) || accText.includes(filter) || loanTypeText.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+};

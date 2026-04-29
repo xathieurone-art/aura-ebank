@@ -35,8 +35,8 @@ if ($action === 'get_global_logs') {
     
     $sql = "SELECT 
                 t.id, t.created_at, t.reference_number,
-                u1.account_number AS sender_acc,
-                u2.account_number AS receiver_acc,
+                COALESCE(u1.account_number, 'External') AS sender_acc,
+                COALESCE(u2.account_number, 'External') AS receiver_acc,
                 t.amount, t.description, t.note
             FROM transactions t
             LEFT JOIN users u1 ON t.sender_id = u1.id
