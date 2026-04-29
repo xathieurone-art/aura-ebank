@@ -1,4 +1,6 @@
+// Auth API object - handles all backend communication
 const Auth = {
+    // Login API call
     async login(email, password) {
         const response = await fetch('./api/login.php', {
             method: 'POST',
@@ -8,6 +10,7 @@ const Auth = {
         return await response.json();
     },
 
+    // Registration API call
     async register(formData) {
         const response = await fetch('./api/register.php', {
             method: 'POST',
@@ -17,6 +20,7 @@ const Auth = {
         return await response.json();
     },
 
+    // Money transfer API call
     async transfer(transferData) {
         const response = await fetch('./api/transfer.php', {
             method: 'POST',
@@ -27,12 +31,14 @@ const Auth = {
     }
 };
 
+// Global form submission handler for login, register, and transfer
 document.addEventListener('submit', async (e) => {
     const id = e.target.id;
     if (!['login-form', 'register-form', 'transfer-form'].includes(id)) return;
 
     e.preventDefault();
 
+    // Handle Login
     if (id === 'login-form') {
         const email = e.target.querySelector('[name="email"]').value;
         const pass = e.target.querySelector('[name="password"]').value;
@@ -40,11 +46,13 @@ document.addEventListener('submit', async (e) => {
         try {
             const result = await Auth.login(email, pass);
             if (result.success) {
+                // Block frozen accounts from logging in
                 if (result.user.status === 'frozen') {
                     alert("Login Failed: Your account has been frozen.");
                     return;
                 }
                 sessionStorage.setItem('user', JSON.stringify(result.user));
+                // Redirect based on user role
                 window.renderView((result.user.role === 'admin' || result.user.role === 'staff') ? 'admin-dashboard' : 'client-dashboard');
             } else { 
                 alert(result.message); 
@@ -52,6 +60,7 @@ document.addEventListener('submit', async (e) => {
         } catch (err) { console.error("Login Error:", err); }
     }
 
+    // Handle Registration
     if (id === 'register-form') {
         const formData = {
             first_name: e.target.querySelector('[name="first_name"]').value,
@@ -73,6 +82,7 @@ document.addEventListener('submit', async (e) => {
         } catch (err) { console.error("Registration Error:", err); }
     }
 
+    // Handle Money Transfer
     if (id === 'transfer-form') {
         const tData = {
             target_acc: e.target.querySelector('[name="target_acc"]').value,
@@ -80,16 +90,19 @@ document.addEventListener('submit', async (e) => {
             description: e.target.querySelector('[name="description"]')?.value || ""
         };
         
+        // Confirm transfer with user
         if(!confirm(`Confirm transfer of ₱${parseFloat(tData.amount).toLocaleString('en-PH', {minimumFractionDigits: 2})}?`)) return;
         
         try {
             const result = await Auth.transfer(tData);
             alert(result.message);
             if (result.success) {
+                // Update local user balance
                 const user = JSON.parse(sessionStorage.getItem('user'));
                 user.balance = result.new_balance;
                 sessionStorage.setItem('user', JSON.stringify(user));
                 
+                // Refresh UI
                 if (typeof window.populateClientData === 'function') {
                     window.populateClientData(user);
                 }
@@ -103,6 +116,7 @@ document.addEventListener('submit', async (e) => {
     }
 });
 
+// Fallback handlers to prevent default form behavior
 window.handleLogin = (e) => { if(e && e.preventDefault) e.preventDefault(); };
 window.handleRegister = (e) => { if(e && e.preventDefault) e.preventDefault(); };
 window.handleTransfer = (e) => { if(e && e.preventDefault) e.preventDefault(); };

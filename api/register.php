@@ -1,8 +1,10 @@
 <?php
 require_once 'db.php';
 
+// Enable strict error reporting for database
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+// Helper function to send JSON responses
 if (!function_exists('sendJSON')) {
     function sendJSON($data) {
         if (ob_get_length()) ob_clean();
@@ -14,8 +16,10 @@ if (!function_exists('sendJSON')) {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
+// Handle POST registration requests only
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // Extract user registration data
     $fname   = $data['first_name'] ?? '';
     $mname   = $data['middle_name'] ?? '';
     $lname   = $data['last_name'] ?? '';
@@ -27,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bday    = $data['birthdate'] ?? '';
     $raw_password = $data['password'] ?? '';
 
+    // Validate password strength (min 8 chars, uppercase, lowercase, number, special char)
     $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
     if (!preg_match($regex, $raw_password)) {
         sendJSON(["success" => false, "message" => "Password too weak."]);
@@ -34,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $passwordHash = password_hash($raw_password, PASSWORD_DEFAULT);
 
+    // Generate unique account number
     try {
         $count_result = $conn->query("SELECT COUNT(*) as total FROM users");
         $row = $count_result->fetch_assoc();
@@ -45,9 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $acc_num = "AURA-" . $next_id . $date_part . $rand_part;
 
     } catch (Exception $e) {
+        // Fallback account number generation if query fails
         $acc_num = "AURA-" . date('His') . rand(10, 99);
     }
 
+    // Insert new user into database
     try {
         $stmt = $conn->prepare("
             INSERT INTO users 
@@ -74,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (mysqli_sql_exception $e) {
 
+        // Handle duplicate email error
         if ($e->getCode() === 1062) {
             sendJSON(["success" => false, "message" => "Email is already registered."]);
         } else {

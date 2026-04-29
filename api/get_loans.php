@@ -2,6 +2,7 @@
 require_once 'db.php';
 session_start();
 
+// Helper function to send JSON responses
 function sendJSON($data) {
     if (ob_get_length()) ob_clean();
     header('Content-Type: application/json');
@@ -9,6 +10,7 @@ function sendJSON($data) {
     exit;
 }
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     sendJSON(["success" => false, "message" => "Unauthorized"]);
 }
@@ -16,13 +18,14 @@ if (!isset($_SESSION['user_id'])) {
 $role = $_SESSION['role'];
 $user_id = (int)$_SESSION['user_id'];
 
+// Admin/Staff: view all loans with user details
 if ($role === 'admin' || $role === 'staff') {
     $sql = "
         SELECT l.*, u.first_name, u.last_name, u.account_number 
         FROM loans l
         JOIN users u ON l.user_id = u.id
         ORDER BY 
-            CASE WHEN l.status = 'Pending' THEN 1 ELSE 2 END,
+            CASE WHEN l.status = 'Pending' THEN 1 ELSE 2 END,  -- Pending loans first
             l.created_at DESC
     ";
     $result = $conn->query($sql);
@@ -36,7 +39,9 @@ if ($role === 'admin' || $role === 'staff') {
         $loans[] = $row;
     }
     sendJSON($loans);
-} else {
+} 
+// Regular user: view only their own loans
+else {
     $sql = "
         SELECT l.*, u.first_name, u.last_name, u.account_number 
         FROM loans l

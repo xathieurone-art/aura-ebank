@@ -2,6 +2,7 @@
 require_once 'db.php';
 session_start();
 
+// Helper function to send JSON responses
 if (!function_exists('sendJSON')) {
     function sendJSON($data) {
         if (ob_get_length()) ob_clean();
@@ -11,14 +12,17 @@ if (!function_exists('sendJSON')) {
     }
 }
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     sendJSON(["success" => false, "message" => "Unauthorized"]);
 }
 
 $user_id = (int)$_SESSION['user_id'];
 
+// Enable strict error reporting for this query
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+// Fetch transactions where user is sender OR receiver, with formatted names
 $sql = "SELECT 
             t.amount, 
             t.description, 
@@ -53,20 +57,23 @@ if (!$result) {
 
 $logs = [];
 
+// Process each transaction to determine direction (sent/received)
 while ($row = $result->fetch_assoc()) {
 
     $isSender = ((int)$row['sender_id'] === $user_id);
     $s_name = $row['sender_name'] ?? "External System";
     $r_name = $row['receiver_name'] ?? "External System";
 
+    // Format description based on transaction direction
     if ($isSender) {
         $display_desc = "Sent to " . $r_name;
-        $display_amount = -abs($row['amount']);
+        $display_amount = -abs($row['amount']); // Negative for sent money
     } else {
         $display_desc = "Received from " . $s_name;
-        $display_amount = abs($row['amount']);
+        $display_amount = abs($row['amount']); // Positive for received money
     }
 
+    // Append note if exists
     if (!empty($row['note']) && $row['note'] !== 'No note provided') {
         $display_desc .= " (" . $row['note'] . ")";
     }

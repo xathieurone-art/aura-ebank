@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Client Dashboard Template -->
 <template id="tpl-client-dashboard">
     <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="brand">AURA E-BANK</div>
             <div class="user-profile">
@@ -10,23 +12,39 @@
                 <small id="display-acc">ACC: ####-####</small>
             </div>
             <ul class="nav-links">
-                <li id="tab-wallet" class="active" onclick="switchTab('wallet')"><i class="fas fa-wallet"></i> <span>Wallet</span></li>
-                <li id="tab-history" onclick="switchTab('history')"><i class="fas fa-history"></i> <span>History</span></li>
-                <li id="tab-loan" onclick="switchTab('loan')"><i class="fas fa-hand-holding-usd"></i> <span>Loan</span></li>
-                <li id="tab-bills" onclick="switchTab('bills')"><i class="fas fa-file-invoice-dollar"></i> <span>Bill Payments</span></li>
-                <li id="tab-settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> <span>Settings</span></li>
+                <li id="tab-wallet" class="active" onclick="switchTab('wallet')">
+                    <i class="fas fa-wallet"></i> <span>Wallet</span>
+                </li>
+                <li id="tab-history" onclick="switchTab('history')">
+                    <i class="fas fa-history"></i> <span>History</span>
+                </li>
+                <li id="tab-loan" onclick="switchTab('loan')">
+                    <i class="fas fa-hand-holding-usd"></i> <span>Loan</span>
+                </li>
+                <li id="tab-bills" onclick="switchTab('bills')">
+                    <i class="fas fa-file-invoice-dollar"></i> <span>Bill Payments</span>
+                </li>
+                <li id="tab-settings" onclick="switchTab('settings')">
+                    <i class="fas fa-cog"></i> <span>Settings</span>
+                </li>
             </ul>
-            <button class="btn btn-danger btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></button>
+            <button class="btn btn-danger btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+            </button>
         </aside>
 
+        <!-- Main Content Area -->
         <main class="content">
+            <!-- Wallet Section -->
             <section id="sec-wallet">
+                <!-- Balance Card -->
                 <div class="glass-card balance-card">
                     <small>Available Balance</small>
                     <h1 id="display-balance">₱0.00</h1>
                     <span class="currency-tag">PHP - Philippine Peso</span>
                 </div>
 
+                <!-- Deposit & Withdraw Actions -->
                 <div class="action-grid">
                     <div class="glass-card">
                         <h3><i class="fas fa-arrow-down" style="color: var(--success);"></i> Deposit</h3>
@@ -50,6 +68,7 @@
                     </div>
                 </div>
                 
+                <!-- Send Money Form -->
                 <div class="glass-card mt-4">
                     <h3><i class="fas fa-paper-plane"></i> Send Money</h3>
                     <form id="transfer-form" class="transfer-form">
@@ -70,6 +89,7 @@
                 </div>
             </section>
 
+            <!-- Transaction History Section -->
             <section id="sec-history" class="hidden">
                 <div class="glass-card full-width">
                     <h3>Transaction History</h3>
@@ -93,7 +113,9 @@
                 </div>
             </section>
 
+            <!-- Loan Section -->
             <section id="sec-loan" class="hidden">
+                <!-- Loan Application Form -->
                 <div class="glass-card full-width">
                     <h3><i class="fas fa-file-invoice"></i> Loan Application</h3>
                     <form onsubmit="handleLoanApplication(event)" class="auth-form" style="max-width: 600px;">
@@ -116,6 +138,7 @@
                     </form>
                 </div>
 
+                <!-- Loan History Table -->
                 <div class="glass-card mt-4 full-width">
                     <h3>My Loan Applications</h3>
                     <div class="table-responsive">
@@ -134,7 +157,9 @@
                 </div>
             </section>
 
+            <!-- Bill Payments Section -->
             <section id="sec-bills" class="hidden">
+                <!-- Bill Payment Form -->
                 <div class="glass-card full-width">
                     <h3><i class="fas fa-file-invoice-dollar"></i> Pay a Bill</h3>
                     <form onsubmit="handleBillPayment(event)" class="auth-form" style="max-width: 600px;">
@@ -160,6 +185,7 @@
                     </form>
                 </div>
 
+                <!-- Bill Payment History -->
                 <div class="glass-card mt-4 full-width">
                     <h3>Bill Payment History</h3>
                     <div class="table-responsive">
@@ -178,6 +204,7 @@
                 </div>
             </section>
 
+            <!-- Settings Section -->
             <section id="sec-settings" class="hidden">
                 <div class="glass-card">
                     <h3><i class="fas fa-user-shield"></i> Account Settings</h3>

@@ -1,11 +1,13 @@
 <?php
 header('Content-Type: application/json');
 
+// Database configuration
 $host = 'localhost';
 $dbname = 'aura_ebank';
 $username = 'root';
 $password = '';
 
+// Establish PDO database connection
 try {
     $pdo = new PDO(
         "mysql:host=$host;dbname=$dbname",
@@ -22,8 +24,10 @@ try {
     exit;
 }
 
+// Parse incoming JSON data
 $data = json_decode(file_get_contents('php://input'), true);
 
+// Validate required fields
 if (!$data || !isset($data['account_number'])) {
     echo json_encode([
         'success' => false,
@@ -39,6 +43,7 @@ $newPass = $data['password'] ?? null;
 
 try {
 
+    // Update includes password if provided
     if (!empty($newPass)) {
 
         $hashedPass = password_hash($newPass, PASSWORD_DEFAULT);
@@ -51,6 +56,7 @@ try {
         $stmt->execute([$email, $phone, $hashedPass, $accNum]);
 
     } 
+    // Update without password (email/phone only)
     else {
 
         $sql = "UPDATE users 
@@ -61,6 +67,7 @@ try {
         $stmt->execute([$email, $phone, $accNum]);
     }
 
+    // Check if any rows were affected
     if ($stmt->rowCount() > 0) {
         echo json_encode([
             'success' => true,

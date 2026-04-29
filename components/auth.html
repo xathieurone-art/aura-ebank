@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aura E-Bank | Secure Access</title>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Main app container -->
     <div id="app-viewport"></div>
 
+    <!-- Login Page Template -->
     <template id="tpl-login">
         <div class="public-page-layout">
+            <!-- Header Section -->
             <header class="public-header">
                 <div class="header-container">
                     <div class="header-logo"><i class="fas fa-shield-halved"></i> Aura E-Bank</div>
@@ -24,6 +28,7 @@
                 </div>
             </header>
 
+            <!-- Login Form -->
             <main class="auth-wrapper">
                 <div class="glass-card auth-card">
                     <div class="brand-header">
@@ -48,6 +53,7 @@
                 </div>
             </main>
 
+            <!-- Footer Section -->
             <footer class="public-footer">
                 <div class="footer-grid">
                     <div class="footer-brand">
@@ -69,14 +75,16 @@
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p class="copy">Copyright © 2024 Aura E-Bank</p>
+                    <p class="copy">Copyright © 2026 Aura E-Bank</p>
                 </div>
             </footer>
         </div>
     </template>
 
+    <!-- Registration Page Template -->
     <template id="tpl-register">
         <div class="public-page-layout">
+            <!-- Header Section -->
             <header class="public-header">
                 <div class="header-container">
                     <div class="header-logo"><i class="fas fa-shield-halved"></i> Aura E-Bank</div>
@@ -90,6 +98,7 @@
                 </div>
             </header>
 
+            <!-- Registration Form -->
             <main class="auth-wrapper">
                 <div class="glass-card auth-card register-wide">
                     <div class="brand-header">
@@ -98,13 +107,24 @@
                     </div>
                     
                     <form id="register-form" class="auth-form">
+                        <!-- Name Row -->
                         <div class="input-row">
-                            <div class="input-group"><i class="fas fa-user"></i><input type="text" name="first_name" placeholder="First Name" required></div>
-                            <div class="input-group"><i class="fas fa-fingerprint"></i><input type="text" name="middle_name" placeholder="Middle Name"></div>
+                            <div class="input-group">
+                                <i class="fas fa-user"></i>
+                                <input type="text" name="first_name" placeholder="First Name" required>
+                            </div>
+                            <div class="input-group">
+                                <i class="fas fa-fingerprint"></i>
+                                <input type="text" name="middle_name" placeholder="Middle Name">
+                            </div>
                         </div>
 
+                        <!-- Last Name & Suffix Row -->
                         <div class="input-row">
-                            <div class="input-group"><i class="fas fa-id-card"></i><input type="text" name="last_name" placeholder="Last Name" required></div>
+                            <div class="input-group">
+                                <i class="fas fa-id-card"></i>
+                                <input type="text" name="last_name" placeholder="Last Name" required>
+                            </div>
                             <div class="input-group">
                                 <i class="fas fa-tag"></i>
                                 <select name="suffix" class="select-input">
@@ -116,12 +136,21 @@
                             </div>
                         </div>
 
-                        <div class="input-group"><i class="fas fa-envelope"></i><input type="email" name="email" placeholder="Email Address" required></div>
- <small class="strength-hint" style="color: var(--muted); margin-bottom: 5px; display: block;">Birthdate</small>
+                        <!-- Email Input -->
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" name="email" placeholder="Email Address" required>
+                        </div>
+
+                        <!-- Birthdate Hint -->
+                        <small class="strength-hint" style="color: var(--muted); margin-bottom: 5px; display: block;">Birthdate</small>
+                        
+                        <!-- Birthdate & Gender Row -->
                         <div class="input-row">
-                            <div class="input-group"><i class="fas fa-calendar"></i><input type="date" name="birthdate" required></div>
-
-
+                            <div class="input-group">
+                                <i class="fas fa-calendar"></i>
+                                <input type="date" name="birthdate" required>
+                            </div>
                             <div class="input-group">
                                 <i class="fas fa-venus-mars"></i>
                                 <select name="gender" class="select-input" required>
@@ -133,13 +162,25 @@
                             </div>
                         </div>
 
+                        <!-- Phone Hint -->
                         <small class="strength-hint" style="color: var(--muted); margin-bottom: 5px; display: block;">Phone must be exactly 11 digits</small>
+                        
+                        <!-- Phone & Address Row -->
                         <div class="input-row">
-                            <div class="input-group"><i class="fas fa-phone"></i><input type="text" name="phone" placeholder="Phone" maxlength="11" required></div>
-                            <div class="input-group"><i class="fas fa-map-marker-alt"></i><input type="text" name="address" placeholder="Address/City" required></div>
+                            <div class="input-group">
+                                <i class="fas fa-phone"></i>
+                                <input type="text" name="phone" placeholder="Phone" maxlength="11" required>
+                            </div>
+                            <div class="input-group">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" name="address" placeholder="Address/City" required>
+                            </div>
                         </div>
 
+                        <!-- Password Hint -->
                         <small class="strength-hint" style="color: var(--muted); margin-bottom: 5px; display: block;">Min 8 chars, Uppercase, Number & Symbol</small>
+                        
+                        <!-- Password & Confirm Row -->
                         <div class="input-row">
                             <div class="input-group">
                                 <i class="fas fa-key"></i>
@@ -152,6 +193,8 @@
                                 <i class="fas fa-eye toggle-password" onclick="togglePassword('reg-pass-confirm', this)"></i>
                             </div>
                         </div>
+                        
+                        <!-- Password Match Error -->
                         <p id="match-error" class="error-text" style="color: #ff4d4d; font-size: 11px; display: none;">Passwords do not match!</p>
 
                         <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-block">Register Account</button>
@@ -163,6 +206,7 @@
                 </div>
             </main>
 
+            <!-- Footer Section -->
             <footer class="public-footer">
                 <div class="footer-grid">
                     <div class="footer-brand">

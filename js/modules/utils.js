@@ -1,3 +1,4 @@
+// Toggle password visibility (show/hide)
 window.togglePassword = function(inputId, icon) {
     const passwordInput = document.getElementById(inputId);
     if (!passwordInput) return;
@@ -9,6 +10,8 @@ window.togglePassword = function(inputId, icon) {
         icon.classList.replace('fa-eye-slash', 'fa-eye');
     }
 };
+
+// Populate client dashboard with user data
 function populateClientData(user) {
     const nameEl = document.getElementById('display-name');
     const accEl = document.getElementById('display-acc');
@@ -26,10 +29,13 @@ function populateClientData(user) {
     }).format(user.balance || 0);
 }
 
+// Logout - clear session and reload page
 window.logout = function() {
     sessionStorage.clear();
     window.location.reload();
 };
+
+// Real-time password strength validation on input
 document.addEventListener('DOMContentLoaded', function() {
     const passwordFields = document.querySelectorAll('input[type="password"]');
     passwordFields.forEach(field => {
@@ -39,16 +45,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.border = '';
                 return;
             }
+            // Green border for strong password
             if (regex.test(this.value)) {
                 this.style.border = '2px solid #2ecc71';
                 this.style.boxShadow = '0 0 8px rgba(46, 204, 113, 0.3)';
-            } else {
+            } 
+            // Red border for weak password
+            else {
                 this.style.border = '2px solid #e74c3c';
                 this.style.boxShadow = '0 0 8px rgba(231, 76, 60, 0.3)';
             }
         });
     });
 });
+
+// Placeholder event handlers (to prevent form submission issues)
 window.handleLogin = e => e?.preventDefault();
 window.handleRegister = e => e?.preventDefault();
 window.handleTransfer = e => e?.preventDefault();

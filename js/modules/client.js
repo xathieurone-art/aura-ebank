@@ -1,3 +1,4 @@
+// Switch between client dashboard tabs
 window.switchTab = function(tab) {
     const sections = ['wallet', 'history', 'loan', 'bills', 'settings'];
     sections.forEach(sec => {
@@ -13,6 +14,7 @@ window.switchTab = function(tab) {
     if (tab === 'settings') loadSettingsData();
 };
 
+// Load user data into settings form
 function loadSettingsData() {
     const savedUser = sessionStorage.getItem('user');
     if (!savedUser) return;
@@ -23,6 +25,7 @@ function loadSettingsData() {
     if (phoneInput) phoneInput.value = user.phone || '';
 }
 
+// Handle profile update (email, phone, password)
 window.handleSelfUpdate = async function(e) {
     e.preventDefault();
     const passField = document.getElementById('self-pass');
@@ -57,6 +60,7 @@ window.handleSelfUpdate = async function(e) {
     }
 };
 
+// Load user transaction history
 async function loadUserHistory() {
     const list = document.getElementById('user-trans-list');
     if (!list) return;
@@ -93,6 +97,7 @@ async function loadUserHistory() {
     }
 }
 
+// Handle deposit and withdrawal transactions
 window.handleTransaction = async function(e, type) {
     e.preventDefault();
     const amountInput = e.target.querySelector('input[type="number"]');
@@ -131,6 +136,7 @@ window.handleTransaction = async function(e, type) {
     }
 };
 
+// Filter transaction history by reference or description
 function filterHistory() {
     const input = document.getElementById('history-search');
     if (!input) return;
@@ -152,6 +158,7 @@ function filterHistory() {
     }
 }
 
+// Submit loan application
 window.handleLoanApplication = async function(e) {
     e.preventDefault();
     const loanType = document.getElementById('loan-type').value;
@@ -188,6 +195,7 @@ window.handleLoanApplication = async function(e) {
     }
 };
 
+// Handle bill payment
 window.handleBillPayment = async function(e) {
     e.preventDefault();
     const biller = document.getElementById('biller-type').value;
@@ -233,6 +241,7 @@ window.handleBillPayment = async function(e) {
     }
 };
 
+// Load user's loan applications
 async function loadUserLoans() {
     const tbody = document.getElementById('user-loan-list');
     if (!tbody) return;
@@ -276,6 +285,7 @@ async function loadUserLoans() {
     }
 }
 
+// Load user's bill payment history
 async function loadUserBills() {
     const tbody = document.getElementById('user-bills-list');
     if (!tbody) return;

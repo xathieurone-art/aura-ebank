@@ -10,6 +10,7 @@ function sendJSON($data) {
     exit;
 }
 
+// Check if user is admin or staff
 if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'staff')) {
     sendJSON(["success" => false, "message" => "Unauthorized access."]);
 }
@@ -18,6 +19,7 @@ $user_role = $_SESSION['role'];
 $data = json_decode(file_get_contents("php://input"), true);
 $action = $data['action'] ?? '';
 
+// Get total users and total money in system
 if ($action === 'get_stats') {
     
     $stats = $conn->query("
@@ -31,6 +33,7 @@ if ($action === 'get_stats') {
     sendJSON(["success" => true, "stats" => $stats]);
 }
 
+// Get all transaction logs with sender/receiver info
 if ($action === 'get_global_logs') {
     
     $sql = "SELECT 
@@ -53,6 +56,7 @@ if ($action === 'get_global_logs') {
     sendJSON(["success" => true, "logs" => $logs]);
 }
 
+// Reverse a transaction (admin only)
 if ($action === 'undo_transaction') {
     
     if ($user_role !== 'admin') {
@@ -61,6 +65,7 @@ if ($action === 'undo_transaction') {
     
     $t_id = intval($data['transaction_id']);
 
+    // Fetch transaction details
     $stmt = $conn->prepare("
         SELECT t.*, u.account_number 
         FROM transactions t 
@@ -71,11 +76,13 @@ if ($action === 'undo_transaction') {
     $stmt->execute();
     $t = $stmt->get_result()->fetch_assoc();
 
+    // Process reversal if transaction exists and not already reversed
     if ($t && strpos($t['description'], 'REVERSED') === false) {
         $amt = abs(floatval($t['amount']));
         $s_id = intval($t['sender_id']);
         $r_id = intval($t['receiver_id']);
 
+        // Extract account digits for reference number
         $raw_acc = (string)$t['account_number'];
         $numeric_only = preg_replace('/[^0-9]/', '', $raw_acc);
         $acc_digits = substr($numeric_only, 0, 2);
@@ -85,14 +92,17 @@ if ($action === 'undo_transaction') {
         $conn->begin_transaction();
 
         try {
+            // Reverse the balances (add back to sender, subtract from receiver)
             $conn->query("UPDATE users SET balance = balance + $amt WHERE id = $s_id");
             $conn->query("UPDATE users SET balance = balance - $amt WHERE id = $r_id");
 
+            // Mark original transaction as reversed
             $new_desc_original = $t['description'] . " (REVERSED)";
             $upd = $conn->prepare("UPDATE transactions SET description = ? WHERE id = ?");
             $upd->bind_param("si", $new_desc_original, $t_id);
             $upd->execute();
 
+            // Create reversal record
             $date_str = date("Ymd");
             $rev_ref = "REV-" . $date_str . "-" . $acc_digits . "-" . rand(1000, 9999);
             $rev_desc = "Reversal of Transaction #$t_id";
@@ -117,6 +127,7 @@ if ($action === 'undo_transaction') {
     }
 }
 
+// Delete a user account (admin only)
 if ($action === 'delete_user') {
    
     if ($user_role !== 'admin') {
@@ -135,6 +146,7 @@ if ($action === 'delete_user') {
     }
 }
 
+// Reset user password
 if ($action === 'reset_password') {
     
     $acc = $data['target_acc'] ?? '';
@@ -151,6 +163,7 @@ if ($action === 'reset_password') {
     }
 }
 
+// Edit user profile information
 if ($action === 'edit_user') {
    
     $acc = $data['target_acc'] ?? '';
@@ -179,6 +192,7 @@ if ($action === 'edit_user') {
     }
 }
 
+// Get all users list
 if ($action === 'get_users') {
     
     $result = $conn->query("

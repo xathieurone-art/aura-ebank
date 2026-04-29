@@ -1,3 +1,4 @@
+// Filter client list by name or account number
 window.filterData = function() {
     const input = document.getElementById('admin-search');
     if (!input) return;
@@ -16,6 +17,7 @@ window.filterData = function() {
     });
 };
 
+// Filter global logs by reference, sender, receiver, or amount
 window.filterLogsByRef = function() {
     const input = document.getElementById('ref-search');
     const table = document.getElementById('table-global-logs');
@@ -37,6 +39,7 @@ window.filterLogsByRef = function() {
     });
 };
 
+// Open edit modal with user data
 window.openEditUser = async function(accountNumber) {
     const modal = document.getElementById('edit-modal');
     if (!modal) return;
@@ -60,11 +63,13 @@ window.openEditUser = async function(accountNumber) {
     }
 };
 
+// Close edit modal
 window.closeEditModal = function() {
     const modal = document.getElementById('edit-modal');
     if (modal) modal.classList.add('hidden');
 };
 
+// Save edited user profile
 window.saveUserEdit = async function(e) {
     e.preventDefault();
     const payload = {
@@ -97,6 +102,7 @@ window.saveUserEdit = async function(e) {
     }
 };
 
+// Reverse/undo a transaction (admin only)
 window.undoTransaction = async function(transactionId) {
     if (!confirm('Revert this transaction? Recipient must have balance.')) return;
     try {
@@ -117,6 +123,7 @@ window.undoTransaction = async function(transactionId) {
     }
 };
 
+// Permanently delete a user account
 window.deleteAccount = async function(accountNumber) {
     if (!confirm(`PERMANENTLY delete ${accountNumber}?`)) return;
     try {
@@ -136,6 +143,7 @@ window.deleteAccount = async function(accountNumber) {
     }
 };
 
+// Reset user password with strength validation
 window.resetPassword = async function(accountNumber) {
     let newPassword = prompt(`New password for ${accountNumber} (8+ chars, Upper/Lower/Number/Symbol):`);
     if (!newPassword?.trim()) return;
@@ -157,6 +165,7 @@ window.resetPassword = async function(accountNumber) {
     }
 };
 
+// Toggle user account freeze/unfreeze
 window.toggleFreeze = async function(accountNumber, currentStatus) {
     if (!confirm(`Account will be ${currentStatus === 'frozen' ? 'unfrozen' : 'frozen'}.`)) return;
     try {
@@ -174,6 +183,7 @@ window.toggleFreeze = async function(accountNumber, currentStatus) {
     }
 };
 
+// Load and display all client users
 async function loadAdminUserList() {
     const tableBody = document.getElementById('admin-user-list');
     if (!tableBody) return;
@@ -207,6 +217,7 @@ async function loadAdminUserList() {
     }
 }
 
+// Load global transaction logs for admin
 async function loadGlobalLogs() {
     const list = document.getElementById('admin-global-logs');
     if (!list) return;
@@ -228,6 +239,7 @@ async function loadGlobalLogs() {
                 
                 let actionHtml = '';
                 
+                // Determine action button based on transaction type
                 if (isReversed || isAlreadyReversed) {
                     actionHtml = '<span class="badge badge-reversed">REVERSED</span>';
                 } else if (isDepositOrWithdraw) {
@@ -256,10 +268,12 @@ async function loadGlobalLogs() {
     }
 }
 
+// Load admin statistics (total money and users)
 async function loadAdminStats() {
     const statsSection = document.getElementById('admin-stats-section');
     const user = JSON.parse(sessionStorage.getItem('user'));
     
+    // Hide stats for non-admin users
     if (!user || user.role !== 'admin') {
         if (statsSection) {
             statsSection.style.display = 'none';
@@ -291,6 +305,7 @@ async function loadAdminStats() {
     }
 }
 
+// Load pending loan applications
 async function loadPendingLoans() {
     const list = document.getElementById('pending-loans-list');
     if (!list) return;
@@ -333,6 +348,7 @@ async function loadPendingLoans() {
     }
 }
 
+// Approve loan and credit to user balance
 window.approveLoan = async function(loanId) {
     if (!confirm('Approve this loan application? The amount will be credited to the user\'s balance.')) return;
     try {
@@ -353,6 +369,7 @@ window.approveLoan = async function(loanId) {
     }
 };
 
+// Decline loan application
 window.declineLoan = async function(loanId) {
     if (!confirm('Decline this loan application?')) return;
     try {
@@ -370,6 +387,7 @@ window.declineLoan = async function(loanId) {
     }
 };
 
+// Switch between admin tabs (Clients, Loans, Logs)
 window.adminTab = function(tab) {
     const clientsSec = document.getElementById('admin-clients-sec');
     const loansSec = document.getElementById('admin-loans-sec');
@@ -383,11 +401,13 @@ window.adminTab = function(tab) {
     const activeTab = document.getElementById('admin-tab-' + tab);
     if (activeTab) activeTab.classList.add('active');
     
+    // Load data based on selected tab
     if (tab === 'logs') loadGlobalLogs();
     else if (tab === 'loans') loadPendingLoans();
     else loadAdminUserList();
 };
-//added search filter for loan approvals
+
+// Filter loan applications by name, account, or loan type
 window.filterLoanData = function() {
     const input = document.getElementById('loan-search');
     if (!input) return;

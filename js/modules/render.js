@@ -1,3 +1,4 @@
+// Component mapping for different views
 const components = {
     'login': 'components/auth.html',
     'register': 'components/auth.html',
@@ -5,10 +6,12 @@ const components = {
     'admin-dashboard': 'components/admin-dashboard.html'
 };
 
+// Main view renderer - loads templates and initializes dashboards
 window.renderView = async function(viewId) {
     const app = document.getElementById('app');
     if (!app) return;
 
+    // Load modals first
     await loadComponent('components/modals.html');
 
     const compPath = components[viewId];
@@ -29,25 +32,30 @@ window.renderView = async function(viewId) {
         }
     }
 
+    // Check if user is logged in
     const savedUser = sessionStorage.getItem('user');
     if (savedUser) {
         const user = JSON.parse(savedUser);
+        // Block frozen accounts (except admin/staff)
         if (user.status === 'frozen' && user.role !== 'admin' && user.role !== 'staff') {
             alert("Account frozen. Contact admin.");
             logout();
             return;
         }
+        // Initialize client dashboard
         if (viewId === 'client-dashboard') {
             if (window.populateClientData) populateClientData(user);
-        } else if (viewId === 'admin-dashboard') {
+        } 
+        // Initialize admin/staff dashboard
+        else if (viewId === 'admin-dashboard') {
             const adminNameEl = document.getElementById('admin-display-name');
             const roleBadgeEl = document.getElementById('admin-role-badge');
             if (adminNameEl) {
-    const first = user.first_name || '';
-    const last = user.last_name || '';
-    const suffix = user.suffix || '';
-    adminNameEl.innerText = `${first} ${last} ${suffix}`.trim() || (user.role === 'staff' ? 'Aura Staff' : 'Aura Administrator');
-}
+                const first = user.first_name || '';
+                const last = user.last_name || '';
+                const suffix = user.suffix || '';
+                adminNameEl.innerText = `${first} ${last} ${suffix}`.trim() || (user.role === 'staff' ? 'Aura Staff' : 'Aura Administrator');
+            }
             if (roleBadgeEl) {
                 if (user.role === 'admin') {
                     roleBadgeEl.innerText = 'AURA ADMIN';
@@ -60,12 +68,14 @@ window.renderView = async function(viewId) {
                 roleBadgeEl.style.marginTop = '5px';
                 roleBadgeEl.style.display = 'block';
             }
+            // Load admin data
             if (window.loadAdminStats) loadAdminStats();
             if (window.loadAdminUserList) loadAdminUserList();
         }
     }
 };
 
+// Load external component HTML and append to body
 async function loadComponent(path) {
     try {
         const resp = await fetch(path);

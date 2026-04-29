@@ -2,6 +2,7 @@
 require_once 'db.php';
 session_start();
 
+// Helper function to send JSON responses
 if (!function_exists('sendJSON')) {
     function sendJSON($data) {
         if (ob_get_length()) ob_clean();
@@ -11,18 +12,22 @@ if (!function_exists('sendJSON')) {
     }
 }
 
-
+// Check if user has admin or staff privileges
 if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'staff')) {
     sendJSON(["success" => false, "message" => "Unauthorized access"]);
 }
 
+// Get request data
 $data = json_decode(file_get_contents("php://input"), true);
 
+// Validate required fields
 if (isset($data['target_acc']) && isset($data['current_status'])) {
     $acc = $data['target_acc'];
 
+    // Toggle between active and frozen status
     $newStatus = ($data['current_status'] === 'active') ? 'frozen' : 'active';
 
+    // Update user status (prevent admin accounts from being frozen)
     $stmt = $conn->prepare("
         UPDATE users 
         SET status = ? 

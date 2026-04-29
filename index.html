@@ -4,21 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aura E-Bank | Secure Digital Banking</title>
+    <!-- External CSS -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/helpers.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Main app container -->
     <div id="app"></div>
+    
+    <!-- JavaScript Modules -->
     <script src="js/auth.js"></script>
     <script src="js/modules/utils.js"></script>
     <script src="js/modules/render.js"></script>
     <script src="js/modules/client.js"></script>
     <script src="js/modules/admin.js"></script>
+    
+    <!-- Initial view loader -->
     <script>
+        // Check for existing session and load appropriate dashboard
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = sessionStorage.getItem('user');
+            // Determine view based on user role or show login
             const view = savedUser ? JSON.parse(savedUser).role === 'admin' ? 'admin-dashboard' : 'client-dashboard' : 'login';
             window.renderView(view);
         });
